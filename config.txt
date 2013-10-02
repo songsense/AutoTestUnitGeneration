@@ -1,7 +1,7 @@
 SolutionFileName: Solution
 TestFileName: SolutionTest
 NewFunctionName: haha
-InputParameters: int a, const vector<int> &array
-OutputParameter: vector<string> &
-Comments: Yeah! there is multiple words
+InputParameters: int, const vector<int> &array
+OutputParameters: vector<string> &
+Comments: Yeah!
 SavedTestFileName: TestHAHA

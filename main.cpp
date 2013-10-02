@@ -128,7 +128,7 @@ int main(int argc, const char * argv[])
     for (size_t i = 0; i < inputParameters.size()-1; ++i)
       ss<<inputParameters[i]<<", ";
     ss<<inputParameters[inputParameters.size() - 1];
-    ss<<"){\n\n}";
+    ss<<"){\n\n}\n";
     keyStream<<"#include \""<<solutionFileName<<".h\"";
     ret = insert2File(solutionFileName+".cpp", ss.str(), keyStream.str());
     if (ret == 1)
@@ -141,7 +141,7 @@ int main(int argc, const char * argv[])
     // Test for Solution header
     ss.clear();    ss.str("");
     keyStream.clear(); keyStream.str("");
-    ss<<"\t void Test_"<<solutionFileName<<"();\n";
+    ss<<"\t void Test_"<<newFunctionName<<"();"<<" // "<<comments<<"\n";
     keyStream<<"public:";
     ret = insert2File(TestFileName+".h", ss.str(), keyStream.str());
     if (ret == 1)
@@ -154,11 +154,23 @@ int main(int argc, const char * argv[])
     // Test for solution cpp
     ss.clear(); ss.str("");
     keyStream.clear(); keyStream.str("");
-    ss<<"void "<<TestFileName<<"::Test_"<<outputParameter<<" "<<solutionFileName<<"::"<<newFunctionName<<"() {\n";
+    ss<<"void "<<TestFileName<<"::Test_"<<newFunctionName<<"() {\n";
     ss<<"\tofstream fout;\n";
     ss<<"\tOpenLogFile(fout, \""<<comments<<".html\", \""<<comments<<"\");\n\n\n";
     ss<<"\tCloseLogFile(fout);\n}\n";
     keyStream<<"#include \""<<TestFileName<<".h\"";
+    ret = insert2File(TestFileName+".cpp", ss.str(), keyStream.str());
+    if (ret == 1)
+      cout<<TestFileName<<".cpp "<<"has been added successfully"<<endl;
+    else if (ret == 0)
+      cout<<"cannot open "<<TestFileName<<".cpp"<<endl;
+    else
+      cout<<"fail to find the keyword: "<<keyStream.str()<<endl;
+    // Add test function into Test Solution file
+    ss.clear(); ss.str("");
+    keyStream.clear(); keyStream.str("");
+    ss<<"\tTest_"<<newFunctionName<<"(); // "<<comments<<"\n";
+    keyStream<<"#endif";
     ret = insert2File(TestFileName+".cpp", ss.str(), keyStream.str());
     if (ret == 1)
       cout<<TestFileName<<".cpp "<<"has been added successfully"<<endl;
